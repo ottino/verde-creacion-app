@@ -17,8 +17,8 @@ self.addEventListener('install', e => {
 
             // Cargar en cache
             return cache.addAll([
-                '/',
-                '/index.html',
+                // '/',
+                // '/index.html',
                 '/css/style.css',
                 '/js/app.js',
                 ]);
@@ -79,24 +79,24 @@ self.addEventListener('activate', event => {
 });
 
 // FETCH: Manejo de peticiones http
-self.addEventListener('fetch', e => {
+// self.addEventListener('fetch', e => {
 
-    console.log('Respuestas: ', e.request);
-    const respuesta = caches.match( e.request )
-        .then( res => {
-            console.log('Respuestas: ', res.url);
+//     console.log('Respuestas: ', e.request);
+//     const respuesta = caches.match( e.request )
+//         .then( res => {
+//             console.log('Respuestas: ', res.url);
 
-            if ( res ) return res; // Responde el cache
+//             if ( res ) return res; // Responde el cache
 
-                return fetch( e.request )
-                    .then( newResp => {
-                        return newResp;
-                });
+//                 return fetch( e.request )
+//                     .then( newResp => {
+//                         return newResp;
+//                 });
 
-        });
+//         });
 
 
-    e.respondWith( respuesta );
+//     e.respondWith( respuesta );
 
-});
+// });
 
