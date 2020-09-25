@@ -37,7 +37,7 @@ document.querySelector('#navbar').innerHTML = `
                 <a id="btnCargarCliente" class="dropdown-item" href="#">Alta Cliente</a>
                 <a id="btnCargarCliente" class="dropdown-item" href="#">Modificar Cliente</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">Alta Pedido</a>
+                <a id="btnCargarPedido" class="dropdown-item" href="#">Alta Pedido</a>
                 <a class="dropdown-item" href="#">Modificar Pedido</a>
         </div>
         </li>
@@ -90,23 +90,20 @@ document.querySelector('#divFormCargaCliente').innerHTML = `
       <label for="inputState">Departamento</label>
       <select id="inputState" class="form-control">
         <option selected>Seleccionar...</option>
-        <option>...</option>
+        <option>Oro Verde</option>
+        <option>Valle Maria</option>
+        <option>San Benito</option>
+        <option>Aldea Brasilera</option>
+        <option>Aldea Protestante</option>
+        <option>Otro</option>
       </select>
     </div>
     <div class="form-group col-md-2">
       <label for="inputZip">Codigo Postal</label>
-      <input type="text" class="form-control" id="inputZip">
+      <input type="text" class="form-control" id="inputZip" value="3100">
     </div>
   </div>
-  <div class="form-group">
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" id="gridCheck">
-      <label class="form-check-label" for="gridCheck">
-        Check me out
-      </label>
-    </div>
-  </div>
-
+ 
   <hr>
 
   <div class="row">
@@ -115,7 +112,7 @@ document.querySelector('#divFormCargaCliente').innerHTML = `
         <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
     </div>
     <div class="col">
-      <label for="formGroupExampleInput">Celular</label>
+      <label for="formGroupExampleInput">Celular (*clave)</label>
       <input type="text" class="form-control" placeholder="Celular/Telefono">
     </div>
   </div>
@@ -123,6 +120,71 @@ document.querySelector('#divFormCargaCliente').innerHTML = `
   <hr>
 
   <button class="btn btn-primary">Sign in</button>
+
+</form>
+`;
+
+document.querySelector('#divFormCargaPedido').innerHTML = `
+<form>
+  <div class="col-auto">
+      <label class="sr-only" for="inlineFormInputGroup">Username</label>
+      <div class="input-group mb-2">
+        <div class="input-group-prepend">
+          <div class="input-group-text">@</div>
+        </div>
+        <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="nickname (facebook - instagram)">
+      </div>
+  </div>
+
+  <hr>
+
+
+  <div class="row">
+    <div class="col">
+      <label for="formGroupExampleInput">Producto/s</label>
+      <input type="text" class="form-control" placeholder="Detalle">
+    </div>
+    <div class="col">
+      <label for="formGroupExampleInput">Fecha Pactada</label>
+      <input type="text" class="form-control" placeholder="Fecha (AAAAMMDD)">
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="custom-control custom-radio custom-control-inline">
+    <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input">
+    <label class="custom-control-label" for="customRadioInline1">Con envio</label>
+  </div>
+  <div class="custom-control custom-radio custom-control-inline">
+    <input type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input">
+    <label class="custom-control-label" for="customRadioInline2">Sin envio</label>
+  </div>
+
+  <hr>
+
+  <div class="row">
+    <div class="col">
+      <label for="formGroupExampleInput">Cantidad</label>
+      <input type="text" class="form-control" placeholder="Cantidad">
+    </div>
+    <div class="col">
+      <label for="formGroupExampleInput">Precio</label>
+      <input type="text" class="form-control" placeholder="$ unitario">
+    </div>
+    <div class="col">
+      <label for="formGroupExampleInput">Costo</label>
+      <input type="text" class="form-control" placeholder="$ envio">
+    </div>
+    <div class="col">
+      <label for="formGroupExampleInput">Monto Total</label>
+      <input type="text" class="form-control" placeholder="$ total">
+    </div>
+  </div>
+
+  <hr>
+
+  <button class="btn btn-primary">Grabar</button>
 
 </form>
 `;
@@ -163,19 +225,31 @@ document.querySelector('#divListPedidos').innerHTML = `
 
 let btnCargarCliente    = document.querySelector('#btnCargarCliente');
 let btnListarPedidos    = document.querySelector('#btnListarPedidos');
+let btnCargarPedido     = document.querySelector('#btnCargarPedido');
 let divFormCargaCliente = document.querySelector('#divFormCargaCliente');
+let divFormCargaPedido  = document.querySelector('#divFormCargaPedido');
 let divListPedidos      = document.querySelector('#divListPedidos');
 
 btnCargarCliente.addEventListener('click', ()=>{
 
         divListPedidos.classList.add('hidden');
+        divFormCargaPedido.classList.add('hidden');
         divFormCargaCliente.classList.remove('hidden');
+
+});
+
+btnCargarPedido.addEventListener('click', ()=>{
+
+        divListPedidos.classList.add('hidden');
+        divFormCargaCliente.classList.add('hidden');
+        divFormCargaPedido.classList.remove('hidden');
 
 });
 
 btnListarPedidos.addEventListener('click', ()=>{
 
         divFormCargaCliente.classList.add('hidden');
+        divFormCargaPedido.classList.add('hidden');
         divListPedidos.classList.remove('hidden');
 
 });
