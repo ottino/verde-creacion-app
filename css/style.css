@@ -6,3 +6,7 @@
     width:100%;
     color: darkgrey;
 }
+
+.hidden {
+	display: none;
+}
