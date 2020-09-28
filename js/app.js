@@ -1,11 +1,13 @@
 var url            = window.location.href;
 var swLocation     = '/verde-creacion-app/sw.js';
+let urlApi = `https://verde-creacion-server.herokuapp.com`;
 
 // Verificar si podemos usar Service Workers
 if (navigator.serviceWorker) {
 
         if ( url.includes('localhost') )
         {
+                urlApi = `http://localhost:3000`;
                 swLocation  = '/sw.js';
                 console.log('Trabajando en el localhost!');
         }
@@ -189,39 +191,6 @@ document.querySelector('#divFormCargaPedido').innerHTML = `
 </form>
 `;
 
-document.querySelector('#divListPedidos').innerHTML = `
-<table class="table table-dark">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>@fat</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>the Bird</td>
-      <td>@twitter</td>
-    </tr>
-  </tbody>
-</table>
-`;
-
 
 let btnCargarCliente    = document.querySelector('#btnCargarCliente');
 let btnListarPedidos    = document.querySelector('#btnListarPedidos');
@@ -252,4 +221,78 @@ btnListarPedidos.addEventListener('click', ()=>{
         divFormCargaPedido.classList.add('hidden');
         divListPedidos.classList.remove('hidden');
 
+        fetch( urlApi + '/pedido', {method: 'GET'})
+        .then( resp => resp.json() )
+        .then( resp => {
+
+              let htmlListados = document.querySelector('#divListPedidos');
+
+              let html = `
+              <table class="table table-dark">
+                <thead>
+                  <tr>
+                    <th scope="col">Celu</th>
+                    <th scope="col">nick</th>
+                    <th scope="col">$</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+              `;
+
+              let data  = resp.pedidoDB;
+              data.map((pedido)=>{
+
+                const { celular , nickname , monto_total , estado } = pedido;
+
+                html = html + `
+                                <tr>
+                                  <td> ${ celular     } </td>
+                                  <td> ${ nickname    } </td>
+                                  <td> ${ monto_total } </td>
+                                  <td style="color: #28a745;"> ${ estado } </td>
+                                  <td>
+                                  <button type="button" class="btn btn-outline-warning">Editar</button>
+                                  </td>
+                                </tr>
+                              `;
+                });
+              html = html + `</tbody></table>`;
+
+              htmlListados.innerHTML= html ;
+          });
+
+        // htmlListados.innerHTML = `
+        // <table class="table table-dark">
+        //   <thead>
+        //     <tr>
+        //       <th scope="col">#</th>
+        //       <th scope="col">First</th>
+        //       <th scope="col">Last</th>
+        //       <th scope="col">Handle</th>
+        //     </tr>
+        //   </thead>
+        //   <tbody>
+        //     <tr>
+        //       <th scope="row">1</th>
+        //       <td>Mark</td>
+        //       <td>Otto</td>
+        //       <td>@mdo</td>
+        //     </tr>
+        //     <tr>
+        //       <th scope="row">2</th>
+        //       <td>Jacob</td>
+        //       <td>Thornton</td>
+        //       <td>@fat</td>
+        //     </tr>
+        //     <tr>
+        //       <th scope="row">3</th>
+        //       <td>Larry</td>
+        //       <td>the Bird</td>
+        //       <td>@twitter</td>
+        //     </tr>
+        //   </tbody>
+        // </table>
+        // `;
 });
