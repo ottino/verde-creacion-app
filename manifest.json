@@ -1,0 +1,18 @@
+{
+
+    "short_name": "VerdeCrecion",
+    "name": "App de Verde Crecion",
+    "start_url": "index.html",
+    "background_color": "#3498db",
+    "theme_color": "#3498db",
+    "display": "standalone",
+    "orientation": "portrait",
+    "icons": [
+        {
+            "src": "img/logo.jpg",
+            "type": "image/jpg",
+            "sizes": "72x72"
+        }
+      ]
+    
+}

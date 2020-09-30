@@ -1,3 +1,6 @@
+// import { ocultarDiv } from './lib/util';
+// const { ocultarDiv } = require('./lib/util');
+
 var url            = window.location.href;
 var swLocation     = '/verde-creacion-app/sw.js';
 let urlApi = `https://verde-creacion-server.herokuapp.com`;
@@ -10,6 +13,10 @@ if (navigator.serviceWorker) {
                 urlApi = `http://localhost:3000`;
                 swLocation  = '/sw.js';
                 console.log('Trabajando en el localhost!');
+        } else  {
+
+          console.log('Trabajando en git!');
+
         }
 
         // registramos el SW
@@ -66,43 +73,34 @@ document.querySelector('#footer').innerHTML = `
 `;
 
 document.querySelector('#divFormCargaCliente').innerHTML = `
-<form>
+
+<div class="container" id="divMensajeAltaCliente" class="hidden"></div>
+
+<form class="form-group">
 
   <div class="row">
     <div class="col">
       <label for="formGroupExampleInput">Nombre</label>
-      <input type="text" class="form-control" placeholder="Nombre">
+      <input id="fac_nombre_cli" type="text" class="form-control" placeholder="Nombre">
     </div>
     <div class="col">
       <label for="formGroupExampleInput">Apellido</label>
-      <input type="text" class="form-control" placeholder="Apellido">
+      <input id="fac_apellido" type="text" class="form-control" placeholder="Apellido">
     </div>
   </div>
   <hr>
   <div class="form-group">
     <label for="inputAddress">Direccion</label>
-    <input type="text" class="form-control" id="inputAddress" placeholder="Direccion">
+    <input id="fac_direccion" type="text" class="form-control" placeholder="Direccion">
   </div>
   <div class="form-row">
     <div class="form-group col-md-6">
       <label for="inputCity">Ciudad</label>
-      <input type="text" class="form-control" id="inputCity">
-    </div>
-    <div class="form-group col-md-4">
-      <label for="inputState">Departamento</label>
-      <select id="inputState" class="form-control">
-        <option selected>Seleccionar...</option>
-        <option>Oro Verde</option>
-        <option>Valle Maria</option>
-        <option>San Benito</option>
-        <option>Aldea Brasilera</option>
-        <option>Aldea Protestante</option>
-        <option>Otro</option>
-      </select>
+      <input id="fac_ciudad" type="text" class="form-control">
     </div>
     <div class="form-group col-md-2">
       <label for="inputZip">Codigo Postal</label>
-      <input type="text" class="form-control" id="inputZip" value="3100">
+      <input id="fac_cp" type="text" class="form-control" value="3100">
     </div>
   </div>
  
@@ -111,17 +109,21 @@ document.querySelector('#divFormCargaCliente').innerHTML = `
   <div class="row">
     <div class="col">
         <label for="inputEmail4">Email</label>
-        <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
+        <input id="fac_email" type="email" class="form-control" placeholder="Email">
     </div>
     <div class="col">
       <label for="formGroupExampleInput">Celular (*clave)</label>
-      <input type="text" class="form-control" placeholder="Celular/Telefono">
+      <input id="fac_celular" type="text" class="form-control" placeholder="Celular/Telefono">
     </div>
   </div>
 
   <hr>
 
-  <button class="btn btn-primary">Sign in</button>
+  <div class="row">
+    <div class="col">
+      <button id="btnGuardarCli" type="text" class="btn btn-primary">Guardar</button>
+    </div>
+  </div>
 
 </form>
 `;
@@ -186,33 +188,67 @@ document.querySelector('#divFormCargaPedido').innerHTML = `
 
   <hr>
 
-  <button class="btn btn-primary">Grabar</button>
+  <text class="btn btn-primary">Grabar</button>
 
 </form>
 `;
 
+// Oculto todos los divs cuando recargo la web
+ocultarDivs();
+//mostrarDiv('divListPedidos');
 
 let btnCargarCliente    = document.querySelector('#btnCargarCliente');
 let btnListarPedidos    = document.querySelector('#btnListarPedidos');
 let btnCargarPedido     = document.querySelector('#btnCargarPedido');
+let btnGuardarCli       = document.querySelector('#btnGuardarCli');
 let divFormCargaCliente = document.querySelector('#divFormCargaCliente');
 let divFormCargaPedido  = document.querySelector('#divFormCargaPedido');
 let divListPedidos      = document.querySelector('#divListPedidos');
 
+
 btnCargarCliente.addEventListener('click', ()=>{
 
-        divListPedidos.classList.add('hidden');
-        divFormCargaPedido.classList.add('hidden');
-        divFormCargaCliente.classList.remove('hidden');
-
+        mostrarDiv( 'divFormCargaCliente' );
+        limpiarFormAltaCliente();
 });
 
 btnCargarPedido.addEventListener('click', ()=>{
 
-        divListPedidos.classList.add('hidden');
-        divFormCargaCliente.classList.add('hidden');
-        divFormCargaPedido.classList.remove('hidden');
+        mostrarDiv( 'divFormCargaPedido' );
 
+});
+
+btnGuardarCli.addEventListener('click', async ()=>{
+
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type",
+                         "application/x-www-form-urlencoded");
+
+        var requestOptions = {
+          method: 'POST',
+          headers: myHeaders,
+          body: FormDatosCliente(),
+          redirect: 'follow'
+        };
+
+        fetch(urlApi + '/cliente' , requestOptions)
+          .then(response => response.text())
+          .then(result => {
+
+            let { ok } = JSON.parse(result);
+
+            if ( ok === false)
+            {
+              mensajeDiv( 'danger' ,  'divMensajeAltaCliente' , 'Error en el alta de cliente' );
+            } else {
+              limpiarFormAltaCliente();
+              mensajeDiv( 'info' ,  'divMensajeAltaCliente' , 'Procesado con exito' );
+            }
+
+
+
+          })
+          .catch(error => console.log(error) );
 });
 
 btnListarPedidos.addEventListener('click', ()=>{
