@@ -42,6 +42,9 @@ document.querySelector('#navbar').innerHTML = `
           <li class="nav-item">
           <a id="btnListarPedidos_todos" class="nav-link" href="#">Todos</a>
           </li>
+          <li class="nav-item">
+          <a id="btnListarClientes" class="nav-link" href="#">Mis Clientes</a>
+          </li>
           <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Carga de datos
@@ -219,6 +222,7 @@ let btnCargarCliente    = document.querySelector('#btnCargarCliente');
 let btnListarPedidosPend   = document.querySelector('#btnListarPedidos_pend');
 let btnListarPedidosEnt    = document.querySelector('#btnListarPedidos_ent');
 let btnListarPedidosTodos  = document.querySelector('#btnListarPedidos_todos');
+let btnListarClientes   = document.querySelector('#btnListarClientes');
 let btnCargarPedido     = document.querySelector('#btnCargarPedido');
 let btnGuardarCli       = document.querySelector('#btnGuardarCli');
 let btnGuardarPedido    = document.querySelector('#btnGuardarPedido');
@@ -491,6 +495,52 @@ btnListarPedidosTodos.addEventListener('click', ()=>{
                               <button type="button" class="btn btn-outline-warning" 
                                       onclick=" modificarPedido( '${ _id }' ) ">Editar</button>
                               </td>
+                            </tr>
+                          `;
+            });
+          html = html + `</tbody></table>`;
+
+          htmlListados.innerHTML= html ;
+      });
+
+});
+
+btnListarClientes.addEventListener('click', ()=>{
+
+  divFormCargaCliente.classList.add('hidden');
+  divFormCargaPedido.classList.add('hidden');
+  divListPedidos.classList.remove('hidden');
+
+   fetch( urlApi + '/cliente', {method: 'GET'})
+    .then( resp => resp.json() )
+    .then( resp => {
+
+          let htmlListados = document.querySelector('#divListPedidos');
+
+          let html = `
+          <table class="table table-dark">
+            <thead>
+              <tr>
+                <th scope="col">_id</th>
+                <th scope="col">celu</th>
+                <th scope="col">email</th>
+                <th scope="col">nombre</th>
+              </tr>
+            </thead>
+            <tbody>
+          `;
+
+          let data  = resp.clienteDB;
+          data.map((cliente)=>{
+
+            const { _id , email , celular , nombre  } = cliente;
+
+            html = html + `
+                            <tr>
+                              <td> ${ _id.slice( _id.length -5 ,_id.length) } </td>
+                              <td> ${ celular     } </td>
+                              <td> ${ email       } </td>
+                              <td> ${ nombre      } </td>
                             </tr>
                           `;
             });
