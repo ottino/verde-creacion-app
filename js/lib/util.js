@@ -67,6 +67,56 @@ let FormDatosCliente = () => {
 
 }
 
+let FormDatosPedido = ( id = false ) => {
+
+    let celular     = document.getElementById("fap_celular").value,
+    nickname        = document.getElementById("fap_nick").value,
+    productos       = document.getElementById("fap_productos").value,
+    fecha_pactada   = document.getElementById("fap_fechaPactada").value,
+    costo_envio     = document.getElementById("fap_precioEnvio").value,
+    envioObs        = document.getElementById("fap_envioObs").value,
+    cantidad        = document.getElementById("fap_cantidad").value,
+    precio_u        = document.getElementById("fap_precioUnit").value,
+    estado          = document.getElementById("fap_estado").value,
+    monto_total     = document.getElementById("fap_importeTot").value;
+
+
+    if ( id == false )
+    {
+        return new URLSearchParams({
+            celular,
+            nickname,
+            productos,
+            fecha_pactada,
+            costo_envio,
+            envioObs,
+            cantidad,
+            precio_u,
+            estado,
+            monto_total
+        });
+
+    } else {
+
+        return new URLSearchParams({
+            id,
+            celular,
+            nickname,
+            productos,
+            fecha_pactada,
+            costo_envio,
+            envioObs,
+            cantidad,
+            precio_u,
+            estado,
+            monto_total
+        });
+
+    }
+
+}
+
+
 let limpiarFormAltaCliente = () => {
 
     let divMensajes = document.querySelector('#divMensajeAltaCliente');
@@ -80,6 +130,25 @@ let limpiarFormAltaCliente = () => {
     document.getElementById("fac_email").value = "";
     document.getElementById("fac_celular").value = "";
 
+
+
+}
+
+let limpiarFormAltaPedido = () => {
+
+    let divMensajes = document.querySelector('#divMensajeAltaPedido');
+    divMensajes.classList.add('hidden');
+
+    document.getElementById("fmp_idPedido").value = "";
+    document.getElementById("fap_celular").value = "";
+    document.getElementById("fap_nick").value = "";
+    document.getElementById("fap_productos").value = "";
+    document.getElementById("fap_fechaPactada").value = "";
+    document.getElementById("fap_precioEnvio").value = "";
+    document.getElementById("fap_envioObs").value = "";
+    document.getElementById("fap_cantidad").value = "";
+    document.getElementById("fap_precioUnit").value = "";
+    document.getElementById("fap_importeTot").value = "";
 
 
 }
