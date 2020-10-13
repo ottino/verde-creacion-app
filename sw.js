@@ -1,4 +1,4 @@
-const CACHE_STATIC_NAME     = 'static-v1';
+// const CACHE_STATIC_NAME     = 'static-v1';
 const CACHE_INMUTABLE_NAME  = 'inmutable-v1';
 
 
@@ -16,12 +16,12 @@ self.addEventListener('install', e => {
             console.log('Paginas cargadas en el APP SHELL: Ok');
 
             // Cargar en cache
-            return cache.addAll([
-                // '/',
-                // '/index.html',
-                '/css/style.css',
-                '/js/app.js',
-                ]);
+            // return cache.addAll([
+            //     // '/',
+            //     // '/index.html',
+            //     '/css/style.css'
+            //     // '/js/app.js',
+            //     ]);
 
 
         }).then( () => {
